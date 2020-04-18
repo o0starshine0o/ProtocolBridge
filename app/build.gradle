@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -38,6 +39,8 @@ dependencies {
     // json解析
     implementation 'com.google.code.gson:gson:2.8.5'
     // 协议桥接
-    implementation project(path: ':ProtocolBridge')
-//    implementation 'com.github.qicodes:ProtocalBridge:1.2.7'
+    implementation project(':ProtocolBridge')
+//    implementation 'com.github.qicodes:protocal-bridge:1.0.0'
+    kapt project(':ProtocolBridgeProcessor')
+//    implementation 'com.github.qicodes:protocal-bridge-processor:1.0.0'
 }

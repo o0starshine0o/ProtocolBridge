@@ -1,3 +1,4 @@
 rootProject.name='ProtocolBridgeDemo'
 include ':app'
 include ':ProtocolBridge'
+include ':ProtocolBridgeProcessor'
