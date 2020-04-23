@@ -1,24 +1,5 @@
+apply plugin: 'java-library'
 apply plugin: 'kotlin'
-
-//android {
-//    compileSdkVersion 27
-//
-//    defaultConfig {
-//        minSdkVersion 16
-//        targetSdkVersion 27
-//        versionCode PROJ_VERSION_CODE.toInteger()
-//        versionName PROJ_VERSION
-//    }
-//
-//    buildTypes {
-//        release {
-//            minifyEnabled false
-//        }
-//        debug {
-//            minifyEnabled false
-//        }
-//    }
-//}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
