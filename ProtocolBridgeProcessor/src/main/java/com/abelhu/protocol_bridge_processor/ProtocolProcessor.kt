@@ -2,16 +2,13 @@ package com.abelhu.protocol_bridge_processor
 
 import com.abelhu.protocalbridge.Protocol
 import com.abelhu.utils.takeAll
-import com.abelhu.utils.takeOnly
-import com.google.auto.service.AutoService
-import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import javax.annotation.processing.*
+import javax.annotation.processing.AbstractProcessor
+import javax.annotation.processing.RoundEnvironment
+import javax.annotation.processing.SupportedOptions
+import javax.annotation.processing.SupportedSourceVersion
 import javax.lang.model.SourceVersion
-import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
-@AutoService(Processor::class) // for registering the service
 @SupportedSourceVersion(SourceVersion.RELEASE_8) // support java 8
 @SupportedOptions(ProtocolProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 class ProtocolProcessor : AbstractProcessor() {
@@ -37,7 +34,7 @@ class ProtocolProcessor : AbstractProcessor() {
         // 获取被注解的元素
         val elements = environment?.getElementsAnnotatedWith(Protocol::class.java)
         // 只有被注解的接口才创建对应的类
-        elements?.takeAll { element -> element.kind.isInterface }?.forEach { element->
+        elements?.takeAll { element -> element.kind.isInterface }?.forEach { element ->
             // 找到所有需要注入的协议
             val protocols = elements.takeAll { protocol -> protocol.kind.isClass }
             // 根据需要注入的协议创建文件
