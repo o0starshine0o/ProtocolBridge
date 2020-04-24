@@ -28,8 +28,7 @@ class MainActivity : AppCompatActivity() {
         // 3、params里面的数据类型的参数
         // 4、一个用于json转换得到的数据类型的参数 + params里面的数据类型的参数
         val params = arrayOf(WebView(baseContext))
-        val types = params.map { it::class.java as Class<*> }.toTypedArray()
-        JsProtocolProxy.Instance.getProtocol("js_share_data", "{\"status\":\"success\",\"result\":{\"js\":\"http://www.qq.com/\"}}", types, params)?.dealProtocol()
+        JsProtocolProxy.Instance.getProtocol("js_share_data", "{\"status\":\"success\",\"result\":{\"js\":\"http://www.qq.com/\"}}", params)?.dealProtocol()
 
 
         // 以下模拟错误的情况：
@@ -52,8 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
         try {
             val errorParams = arrayOf(Fragment())
-            val errorTypes = errorParams.map { it::class.java as Class<*> }.toTypedArray()
-            JsProtocolProxy.Instance.getProtocol("js_share_data", "{\"status\":\"success\",\"result\":{\"js\":\"http://www.qq.com/\"}}", errorTypes, errorParams)?.dealProtocol()
+            JsProtocolProxy.Instance.getProtocol("js_share_data", "{\"status\":\"success\",\"result\":{\"js\":\"http://www.qq.com/\"}}", errorParams)?.dealProtocol()
         } catch (e: NoSuchMethodException) {
             Log.e("MainActivity", "固定的参数类型错误: $e")
         }

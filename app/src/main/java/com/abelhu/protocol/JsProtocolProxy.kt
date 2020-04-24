@@ -22,10 +22,10 @@
 //     *
 //     * @param protocol 协议名称
 //     * @param data 数据，需要转变成对应数据类型的数据，如果没有，获取无参的构造函数
-//     * @param types 不需要转变的数据的数据类型
 //     * @param params 不需要转变的数据
 //     */
-//    fun getProtocol(protocol: String, data: String = "", types: Array<Class<out Any>> = emptyArray(), params: Array<out Any> = emptyArray()): JsProtocol? {
+//    fun getProtocol(protocol: String, data: String = "", params: Array<out Any> = emptyArray()): JsProtocol? {
+//        val types = params.map { it::class.java as Class<*> }.toTypedArray()
 //        return map[protocol]?.let { clazzName ->
 //            val clazz = Class.forName(clazzName)
 //            val constructor = if (data.isEmpty()) clazz.getConstructor(*types) else clazz.getConstructor(data::class.java, *types)
