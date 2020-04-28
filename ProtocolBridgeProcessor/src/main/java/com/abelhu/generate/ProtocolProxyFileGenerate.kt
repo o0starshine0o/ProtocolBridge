@@ -1,4 +1,4 @@
-package com.abelhu.protocol_bridge_processor
+package com.abelhu.generate
 
 import com.abelhu.protocalbridge.Protocol
 import com.squareup.kotlinpoet.*

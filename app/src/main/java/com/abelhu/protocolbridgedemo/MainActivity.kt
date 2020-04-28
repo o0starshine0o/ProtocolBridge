@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         // 模拟在shouldOverrideUrlLoading中调用
         JsProtocolProxy.Instance.getProtocol("no")?.dealProtocol()
         JsProtocolProxy.Instance.getProtocol("one_params", "one param success")?.dealProtocol()
+        JsProtocolProxy.Instance.getProtocol("oneParams", "one param success")?.dealProtocol()
         // 模拟在shouldOverrideUrlLoading中调用
         JsProtocolProxy.Instance.getProtocol("js_open_url", "{\"status\":\"success\",\"result\":{\"js\":\"http://www.qq.com/\"}}")?.dealProtocol()
         // 模拟在shouldOverrideUrlLoading中调用

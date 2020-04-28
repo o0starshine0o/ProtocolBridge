@@ -1,4 +1,4 @@
-package com.abelhu.protocol_bridge_processor
+package com.abelhu.generate
 
 import com.squareup.kotlinpoet.*
 import javax.annotation.processing.Filer
@@ -10,7 +10,7 @@ class PrefixFileGenerate(private val filer: Filer, private val prefix: String) {
         const val FunctionName = "dealProtocol"
     }
 
-    private val name = ClassName(Package, "${prefix.capitalize()}${Protocol}")
+    private val name = ClassName(Package, "${prefix.capitalize()}$Protocol")
 
     fun generateFile() = FileSpec.builder(name.packageName, name.simpleName).addType(generateInterface()).build().apply { writeTo(filer) }
 

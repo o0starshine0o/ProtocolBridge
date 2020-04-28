@@ -1,6 +1,10 @@
 package com.abelhu.protocol_bridge_processor
 
+import com.abelhu.generate.ClassFileGenerate
+import com.abelhu.generate.PrefixFileGenerate
+import com.abelhu.generate.ProtocolProxyFileGenerate
 import com.abelhu.protocalbridge.Protocol
+import com.abelhu.utils.protocolName
 import com.abelhu.utils.takeAll
 import java.util.*
 import javax.annotation.processing.AbstractProcessor
@@ -51,7 +55,7 @@ class ProtocolProcessor : AbstractProcessor() {
             val protocol = PrefixFileGenerate(filer, name).generateFile()
             // 对所有注解到方法上的元素，生成${Function}类
             val files = elementList.takeAll { element -> element is ExecutableElement }
-                .map { Pair(it.getAnnotation(Protocol::class.java).protocol, ClassFileGenerate(filer, it as ExecutableElement, protocol).generateFile()) }
+                .map { Pair(it.protocolName(), ClassFileGenerate(filer, it as ExecutableElement, protocol).generateFile()) }
             // 利用生成的${Function}类和被注解标记的类生成"${prefix}ProtocolProxy"
             ProtocolProxyFileGenerate(filer, protocol).addProtocols(elementList.takeAll { element -> element.kind.isClass }).addFiles(files).generateFile()
         }
