@@ -6,30 +6,32 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Element
 
-class ProtocolProxyFileGenerate(private val filer: Filer, private val element: Element, private val protocols: List<Element>) {
-    private val protocolName = ClassName("${element.enclosingElement}", listOf("${element.simpleName}"))
-    private val className = ClassName("${element.enclosingElement}", "${element.simpleName}${ProtocolProcessor.SUFFIX}")
+class ProtocolProxyFileGenerate(private val filer: Filer, file: FileSpec) {
+    private val protocols: MutableList<Element> = mutableListOf()
+    private val files: MutableList<Pair<String, ClassName>> = mutableListOf()
+    private val protocolName = ClassName(file.packageName, file.name)
+    private val className = ClassName(file.packageName, "${file.name}Proxy")
 
-    fun generateFile() {
-        FileSpec.builder(className.packageName, className.simpleName).addType(generateClass(element, protocols)).build().writeTo(filer)
-    }
+    fun generateFile() = FileSpec.builder(className.packageName, className.simpleName).addType(generateClass()).build().writeTo(filer)
+    fun addProtocols(protocols: List<Element>) = apply { this.protocols.addAll(protocols) }
+    fun addFiles(files: List<Pair<String, ClassName>>) = apply { this.files.addAll(files) }
 
-    private fun generateClass(element: Element, protocols: List<Element>): TypeSpec {
+    private fun generateClass(): TypeSpec {
         return TypeSpec.classBuilder(className.simpleName).primaryConstructor(FunSpec.constructorBuilder().addModifiers(KModifier.PRIVATE).build())
             .addType(generateInstance(className))
             .addProperty(PropertySpec.builder("map", generateHashMap(String::class.asTypeName())).initializer("HashMap()").build())
-            .addInitializerBlock(generateInit(protocols))
+            .addInitializerBlock(generateInit())
             .addFunction(generateGetProtocolFunction())
             .build()
     }
 
-    private fun generateInit(protocols: List<Element>) = CodeBlock.builder().apply {
+    private fun generateInit() = CodeBlock.builder().apply {
         protocols.forEach { protocol -> addStatement("map[\"${protocol.getAnnotation(Protocol::class.java).protocol}\"] = \"${protocol}\"") }
+        files.forEach { file -> addStatement("map[\"${file.first}\"] = \"${file.second}\"") }
     }.build()
 
     private fun generateGetProtocolFunction(): FunSpec {
         return FunSpec.builder("getProtocol")
-            .addAnnotation(JvmOverloads::class.java)
             .addParameter("protocol", String::class)
             .addParameter(ParameterSpec.builder("data", String::class).defaultValue("\"\"").build())
             .addParameter(ParameterSpec.builder("params", generateParams()).defaultValue("emptyArray()").build())

@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // 模拟在shouldOverrideUrlLoading中调用
-        JsProtocolProxy.Instance.getProtocol("js_close")?.dealProtocol()
+        JsProtocolProxy.Instance.getProtocol("no")?.dealProtocol()
+        JsProtocolProxy.Instance.getProtocol("one_params", "one param success")?.dealProtocol()
         // 模拟在shouldOverrideUrlLoading中调用
         JsProtocolProxy.Instance.getProtocol("js_open_url", "{\"status\":\"success\",\"result\":{\"js\":\"http://www.qq.com/\"}}")?.dealProtocol()
         // 模拟在shouldOverrideUrlLoading中调用

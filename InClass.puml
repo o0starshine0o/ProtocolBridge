@@ -1,0 +1,18 @@
+@startuml
+(*top)  --> 寻找所有Protocol注解
+note right: 参数为:\n${protocol} 协议字串\n${prefix}前缀，用于协议分组
+--> "根据Protocol注解中${prefix}字段\n生成接口${prefix}Protocol"
+note right: 有多少个${prefix}就生成多少${prefix}Protocol\n这个Protocol代码很少，基本固定
+--> "根据${prefix}Protocol接口\n生成${prefix}ProtocolProxy代理"
+note right: 代码固定，需要保存map的映射
+if "有注解到方法上?" then
+-->[true] "寻找所有注解到方法上的元素${function}"
+--> "创建类\n${Function}"
+note left: 要实现${prefix}Protocol接口\n完成对应方法
+--> "在代理${prefix}ProtocolProxy中\n保存${Function}和${protocol}的映射关系"
+-->(*)
+else
+-->[false] 寻找所有注解到类上的元素
+--> "在代理${prefix}ProtocolProxy中\n保存Class和${protocol}的映射关系"
+-->(*)
+@enduml
