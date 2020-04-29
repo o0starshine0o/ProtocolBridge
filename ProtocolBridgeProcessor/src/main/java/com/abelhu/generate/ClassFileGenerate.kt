@@ -14,7 +14,9 @@ class ClassFileGenerate(private val filer: Filer, private val function: Executab
     private val interfaceName = ClassName(file.packageName, file.name)
     private val className = ClassName(file.packageName, function.simpleName.toString().capitalize())
 
-    fun generateFile() = FileSpec.builder(className.packageName, className.simpleName).addType(generateClass()).build().writeTo(filer).let { className }
+    fun generateFile() =
+        FileSpec.builder(className.packageName, className.simpleName).addImport(function.enclosingElement.toString(), function.simpleName.toString())
+            .addType(generateClass()).build().writeTo(filer).let { className }
 
     private fun generateClass() = TypeSpec.classBuilder(className.simpleName).addSuperinterface(interfaceName)
         .primaryConstructor(generateConstructor())
@@ -31,7 +33,7 @@ class ClassFileGenerate(private val filer: Filer, private val function: Executab
     private fun generateConstructor() = FunSpec.constructorBuilder().addParameters(ParameterSpec.constructorParametersOf(function)).build()
 
     private fun generateFunction() = FunSpec.builder(FunctionName).addModifiers(KModifier.OVERRIDE)
-        .addStatement("${function.enclosingElement.enclosingElement.simpleName}.${function.simpleName}(${function.parameters})")
+        .addStatement("${function.simpleName}(${function.parameters})")
         .build()
 
     private fun getProtocolPrefix() = function.getAnnotation(Protocol::class.java).prefix
